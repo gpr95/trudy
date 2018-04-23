@@ -6,9 +6,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"github.com/praetorian-inc/trudy/listener"
-	"github.com/praetorian-inc/trudy/module"
-	"github.com/praetorian-inc/trudy/pipe"
+	"github.com/gpr95/trudy/listener"
+	"github.com/gpr95/trudy/module"
+	"github.com/gpr95/trudy/pipe"
 	"io"
 	"log"
 	"net"
@@ -359,7 +359,7 @@ h="";
 
 // Loop on textarea lines
 for(i=0;i<value.length/48;i++)
-  
+
   // Add line number to h
   h+=(1E7+(16*i).toString(16)).slice(-8)+" ";
 
@@ -371,13 +371,13 @@ h="";
 
 // Loop on the hex values
 for(i=0;i<value.length;i+=3)
-  
+
   // Convert them in numbers
   c=parseInt(value.substr(i,2),16),
-  
+
   // Convert in chars (if the charCode is in [64-126] (maybe more later)) or ".".
   h=63<c&&127>c?h+String.fromCharCode(c):h+".";
-  
+
 // Write h in the right column (with line breaks every 16 chars)
 r.innerHTML=h.replace(/(.{16})/g,"$1 ");
 
