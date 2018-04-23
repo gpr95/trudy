@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"github.com/praetorian-inc/trudy/pipe"
 	"net"
+	"strings"
 )
 
 //Data is a thin wrapper that provides metadata that may be useful when mangling bytes on the network.
@@ -18,7 +19,7 @@ type Data struct {
 
 //DoMangle will return true if Data needs to be sent to the Mangle function.
 func (input Data) DoMangle() bool {
-	if input.ServerAddr.String() == "172.217.22.14" {
+	if strings.Contains(input.ServerAddr.String(), "172.217") {
         return true
   }
   return false
