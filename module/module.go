@@ -3,10 +3,10 @@ package module
 import (
 	"crypto/tls"
 	"encoding/hex"
-	"github.com/praetorian-inc/trudy/pipe"
 	"net"
 	"strings"
-	"time"
+
+	"github.com/gpr95/trudy/pipe"
 )
 
 //Data is a thin wrapper that provides metadata that may be useful when mangling bytes on the network.
@@ -21,17 +21,17 @@ type Data struct {
 //DoMangle will return true if Data needs to be sent to the Mangle function.
 func (input Data) DoMangle() bool {
 	if strings.Contains(input.ServerAddr.String(), "172.217") {
-        return true
-  }
-  return false
+		return true
+	}
+	return false
 }
 
 //Mangle can modify/replace the Bytes values within the Data struct. This can
 //be empty if no programmatic mangling needs to be done.
 func (input *Data) Mangle() {
 	for i := range input.Bytes {
-        input.Bytes[i] = 0x00
-  }
+		input.Bytes[i] = 0x00
+	}
 }
 
 //Drop will return true if the Data needs to be dropped before going through
@@ -72,7 +72,7 @@ func (input *Data) Serialize() {
 //BeforeWriteToClient is a function that will be called before data is sent to
 //a client.
 func (input *Data) BeforeWriteToClient(p pipe.Pipe) {
-	time.Sleep(5000 * time.Millisecond)
+
 }
 
 //AfterWriteToClient is a function that will be called after data is sent to
@@ -84,7 +84,7 @@ func (input *Data) AfterWriteToClient(p pipe.Pipe) {
 //BeforeWriteToServer is a function that will be called before data is sent to
 //a server.
 func (input *Data) BeforeWriteToServer(p pipe.Pipe) {
-	time.Sleep(5000 * time.Millisecond)
+
 }
 
 //AfterWriteToServer is a function that will be called after data is sent to
