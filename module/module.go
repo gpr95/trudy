@@ -29,7 +29,7 @@ func (input Data) DoMangle() bool {
 //Mangle can modify/replace the Bytes values within the Data struct. This can
 //be empty if no programmatic mangling needs to be done.
 func (input *Data) Mangle() {
-		if input.Bytes[47] & 0x10 {
+		if input.Bytes[47] & 0x10 == 0x10 {
 			input.Bytes[50] = 0x00
 			input.Bytes[51] = 0x00
 		}
