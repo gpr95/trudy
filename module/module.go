@@ -18,13 +18,18 @@ type Data struct {
 
 //DoMangle will return true if Data needs to be sent to the Mangle function.
 func (input Data) DoMangle() bool {
-	return true
+	if input.ServerAddr.String() == "172.217.22.14" {
+        return true
+  }
+  return false
 }
 
 //Mangle can modify/replace the Bytes values within the Data struct. This can
 //be empty if no programmatic mangling needs to be done.
 func (input *Data) Mangle() {
-
+	for i := range input.Bytes {
+        input.Bytes[i] = 0x00
+  }
 }
 
 //Drop will return true if the Data needs to be dropped before going through
