@@ -30,8 +30,8 @@ func (input Data) DoMangle() bool {
 //be empty if no programmatic mangling needs to be done.
 func (input *Data) Mangle() {
 		if len(input.Bytes) > 51 && (input.Bytes[47] & 0x10) == 0x10 {
-			input.Bytes[50] = 0x00
-			input.Bytes[51] = 0x00
+			input.Bytes[52] = 0xFF
+			input.Bytes[53] = 0xFF
 		}
 }
 
