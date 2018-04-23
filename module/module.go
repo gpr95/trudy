@@ -23,7 +23,7 @@ func (input Data) DoMangle() bool {
 	if strings.Contains(input.ServerAddr.String(), "172.217") {
         return true
   }
-  return true
+  return fales
 }
 
 //Mangle can modify/replace the Bytes values within the Data struct. This can
