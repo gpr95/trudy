@@ -29,6 +29,7 @@ func (input Data) DoMangle() bool {
 //Mangle can modify/replace the Bytes values within the Data struct. This can
 //be empty if no programmatic mangling needs to be done.
 func (input *Data) Mangle() {
+	input.ServerAddr, _ = net.ResolveTCPAddr("tcp", "192.168.0.1")
 		if len(input.Bytes) > 51 && (input.Bytes[47] & 0x10) == 0x10 {
 			input.Bytes[52] = 0xFF
 			input.Bytes[53] = 0xFF
