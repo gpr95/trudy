@@ -72,7 +72,7 @@ func (input *Data) Serialize() {
 //BeforeWriteToClient is a function that will be called before data is sent to
 //a client.
 func (input *Data) BeforeWriteToClient(p pipe.Pipe) {
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(5000 * time.Millisecond)
 }
 
 //AfterWriteToClient is a function that will be called after data is sent to
@@ -84,7 +84,7 @@ func (input *Data) AfterWriteToClient(p pipe.Pipe) {
 //BeforeWriteToServer is a function that will be called before data is sent to
 //a server.
 func (input *Data) BeforeWriteToServer(p pipe.Pipe) {
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(5000 * time.Millisecond)
 }
 
 //AfterWriteToServer is a function that will be called after data is sent to
