@@ -21,7 +21,7 @@ type Data struct {
 //DoMangle will return true if Data needs to be sent to the Mangle function.
 func (input Data) DoMangle() bool {
 	if strings.Contains(input.ServerAddr.String(), "172.217") {
-		return true
+		return false
 	}
 	return false
 }
@@ -29,11 +29,7 @@ func (input Data) DoMangle() bool {
 //Mangle can modify/replace the Bytes values within the Data struct. This can
 //be empty if no programmatic mangling needs to be done.
 func (input *Data) Mangle() {
-	input.ServerAddr, _ = net.ResolveTCPAddr("tcp", "192.168.0.1")
-		if len(input.Bytes) > 51 && (input.Bytes[47] & 0x10) == 0x10 {
-			input.Bytes[52] = 0xFF
-			input.Bytes[53] = 0xFF
-		}
+
 }
 
 //Drop will return true if the Data needs to be dropped before going through
@@ -51,7 +47,7 @@ func (input Data) PrettyPrint() string {
 //DoPrint will return true if the PrettyPrinted version of the Data struct
 //needs to be logged to the console.
 func (input Data) DoPrint() bool {
-	return true
+	return false
 }
 
 //DoIntercept returns true if data should be sent to the Trudy interceptor.
@@ -74,7 +70,8 @@ func (input *Data) Serialize() {
 //BeforeWriteToClient is a function that will be called before data is sent to
 //a client.
 func (input *Data) BeforeWriteToClient(p pipe.Pipe) {
-
+	//fmt.Println("BeforeWriteToClient")
+	//time.Sleep(1 * time.Second)
 }
 
 //AfterWriteToClient is a function that will be called after data is sent to
@@ -85,8 +82,9 @@ func (input *Data) AfterWriteToClient(p pipe.Pipe) {
 
 //BeforeWriteToServer is a function that will be called before data is sent to
 //a server.
-func (input *Data) BeforeWriteToServer(p pipe.Pipe) {
-
+func (input *Data) BeforeWriteToServer(p pipe.Pipe, b byte) {
+	//fmt.Println("BeforeWriteToServer")
+	//time.Sleep(1 * time.Second)
 }
 
 //AfterWriteToServer is a function that will be called after data is sent to

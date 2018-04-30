@@ -5,22 +5,63 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
-	"github.com/gorilla/websocket"
-	"github.com/gpr95/trudy/listener"
-	"github.com/gpr95/trudy/module"
-	"github.com/gpr95/trudy/pipe"
 	"io"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
+	"trudy/module"
+
+	"github.com/gorilla/websocket"
+	"github.com/gpr95/trudy/listener"
+	"github.com/gpr95/trudy/pipe"
+	"golang.org/x/crypto/blowfish"
 )
 
 var connectionCount uint
 var websocketConn *websocket.Conn
 var websocketMutex *sync.Mutex
 var tlsConfig *tls.Config
+var counter = 0
+var antygona []byte
+var conn net.Conn
+
+const (
+	StopCharacter = "\r\n\r\n"
+)
+
+func SocketClient(ip string, port int) {
+	addr := strings.Join([]string{ip, strconv.Itoa(port)}, ":")
+	conn, _ = net.Dial("tcp", addr)
+
+	//defer conn.Close()
+
+	//conn.Write([]byte(StopCharacter))
+	//log.Printf("Send: %s", message)
+
+}
+
+func sende() {
+	key := []byte("my key7")
+	cipher, err := blowfish.NewCipher(key)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	var enc [8]byte
+
+	cipher.Encrypt(enc[0:], antygona[counter:counter+8])
+	conn.Write([]byte(enc[:]))
+	fmt.Println(hex.Dump(antygona[counter : counter+8]))
+	counter = counter + 7
+	fmt.Println(counter)
+	if counter > 12345 {
+		fmt.Println("DONE!!!!!!!!!!!!!!!!!!!")
+	}
+}
 
 func main() {
 	var tcpport string
@@ -78,7 +119,8 @@ func setup(tcpport, tlsport, x509, key string, show bool) {
 	log.Println("[INFO] Trudy lives!")
 	log.Printf("[INFO] Listening for TLS connections on port %s\n", tlsport)
 	log.Printf("[INFO] Listening for all other TCP connections on port %s\n", tcpport)
-
+	antygona, err = ioutil.ReadFile("antygona.txt") // just pass the file name
+	//SocketClient("192.168.1.45", 443)
 	go websocketHandler()
 	go connectionDispatcher(tlsListener, "TLS", show)
 	connectionDispatcher(tcpListener, "TCP", show)
@@ -191,7 +233,10 @@ func clientHandler(pipe pipe.Pipe, show bool) {
 
 		data.Serialize()
 
-		data.BeforeWriteToServer(pipe)
+		data.BeforeWriteToServer(pipe, antygona[counter])
+		//fmt.Println(counter)
+		//sende()
+		counter++
 		bytesRead = len(data.Bytes)
 
 		_, serverWriteErr := pipe.WriteToServer(data.Bytes[:bytesRead])
